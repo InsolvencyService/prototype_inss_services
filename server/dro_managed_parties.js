@@ -16,10 +16,11 @@ Picker.route('/v1/dro_managed_parties/', function(params, req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   if (params.query.q) {
     var escapedQuery = params.query.q.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-
+    //Match start of the party's name
+    var regExpression = new RegExp('^' + escapedQuery);
     var parties = DROManagedParties.find({
       "Name": {
-        $regex: escapedQuery,
+        $regex: regExpression,
         $options: 'i'
       }
     }, {
